@@ -1,310 +1,463 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>FAB District – Clothing Store</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>FAB District — Store</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-    :root {
-        --bg: #0e0e0e;
-        --card: #151515;
-        --text: #ffffff;
-        --accent: #ff2758;
-    }
+  :root{
+    --bg:#f6f7f8;
+    --card:#ffffff;
+    --muted:#6b7280;
+    --accent:#3b82f6;
+    --accent-2:#0f172a;
+    --glass: rgba(255,255,255,0.6);
+    --shadow: 0 6px 18px rgba(16,24,40,0.06);
+  }
+  body.dark{
+    --bg:#0b1220;
+    --card:#0f1724;
+    --muted:#94a3b8;
+    --accent:#7c3aed;
+    --accent-2:#e6eef8;
+    --glass: rgba(255,255,255,0.04);
+    --shadow: 0 8px 26px rgba(2,6,23,0.7);
+  }
 
-    body.light {
-        --bg: #ffffff;
-        --card: #f3f3f3;
-        --text: #000000;
-    }
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
+  body{background:var(--bg);color:var(--accent-2);transition:background .25s,color .25s; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1200px;margin:28px auto;padding:18px;}
 
-    body {
-        margin: 0;
-        font-family: 'Poppins', sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        transition: background 0.3s, color 0.3s;
-    }
+  header.site{
+    display:flex;gap:16px;align-items:center;justify-content:space-between;padding:14px;border-radius:12px;background:var(--card);box-shadow:var(--shadow);
+  }
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand img{height:52px;width:52px;object-fit:cover;border-radius:10px;}
+  .brand h1{font-size:20px;margin:0;font-weight:600;letter-spacing:0.6px;}
+  .controls{display:flex;gap:8px;align-items:center;}
 
-    header {
-        padding: 20px 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: var(--card);
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        border-bottom: 1px solid #222;
-        transition: 0.3s;
-    }
+  .searchbar{
+    display:flex;gap:8px;align-items:center;background:var(--glass);padding:8px;border-radius:10px;border:1px solid rgba(15,23,42,0.04);
+    transition:box-shadow .18s;
+  }
+  .searchbar input{border:0;background:transparent;outline:none;font-size:14px;padding:6px 8px;color:inherit;}
+  .filters{display:flex;gap:8px;align-items:center;margin-left:12px;}
+  .filter-btn{padding:8px 12px;border-radius:999px;border:1px solid rgba(15,23,42,0.06);background:transparent;cursor:pointer;font-size:13px;}
+  .filter-btn.active{background:var(--accent);color:white;border-color:transparent;box-shadow:0 8px 20px rgba(15,23,42,0.08);}
 
-    .logo-img {
-        height: 60px;
-        border-radius: 12px;
-    }
+  .utility-btn{padding:8px 12px;border-radius:10px;background:transparent;border:1px solid rgba(15,23,42,0.06);cursor:pointer;font-weight:600;}
+  .audio-toggle.playing{background:linear-gradient(90deg,var(--accent),#60a5fa);color:white;border-color:transparent;}
 
-    nav a {
-        margin-left: 25px;
-        text-decoration: none;
-        color: var(--text);
-        font-weight: 500;
-        font-size: 16px;
-        transition: 0.25s;
-    }
+  main{margin-top:22px;display:grid;grid-template-columns:1fr 380px;gap:20px;}
+  @media (max-width:980px){main{grid-template-columns:1fr;}}
+  /* left column */
+  .leftcol{display:flex;flex-direction:column;gap:18px;}
+  .hero{
+    border-radius:14px;padding:26px;background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.35));box-shadow:var(--shadow);
+  }
+  body.dark .hero{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));}
 
-    nav a:hover {
-        opacity: 0.7;
-    }
+  .hero h2{margin:0;font-size:28px;font-weight:700;}
+  .hero p{margin:8px 0 0;color:var(--muted);font-size:14px;max-width:70%}
+  .hero-actions{margin-top:14px;display:flex;gap:10px;align-items:center;}
 
-    .theme-btn {
-        margin-left: 20px;
-        padding: 8px 15px;
-        background: var(--accent);
-        border: none;
-        color: white;
-        font-weight: 600;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: 0.3s;
-    }
+  /* Featured slider */
+  .featured{
+    margin-top:8px;border-radius:14px;padding:12px;background:var(--card);box-shadow:var(--shadow);overflow:hidden;
+  }
+  .slider{
+    position:relative;display:flex;gap:12px;align-items:center;
+  }
+  .slides{display:flex;gap:12px;transition:transform .45s cubic-bezier(.22,.9,.33,1);}
+  .slide{min-width:260px;border-radius:12px;overflow:hidden;background:linear-gradient(180deg, rgba(0,0,0,0.03), transparent);box-shadow:0 4px 14px rgba(2,6,23,0.04);cursor:pointer;}
+  .slide img{width:100%;height:180px;object-fit:cover;display:block;}
+  .slide .sinfo{padding:12px;}
+  .nav-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.5);color:white;border:none;padding:10px;border-radius:8px;cursor:pointer;}
+  .nav-arrow.left{left:8px;} .nav-arrow.right{right:8px;}
 
-    .hero {
-        height: 330px;
-        background: url("https://i.imgur.com/zYxN4TE.jpeg") center/cover;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        animation: fadeIn 1.3s ease;
-    }
+  /* Products grid */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:6px;}
+  .card{background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);transition:transform .18s ease,box-shadow .18s;}
+  .card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(2,6,23,0.12);}
+  .card img{width:100%;height:220px;object-fit:cover;display:block;}
+  .card .info{padding:12px;}
+  .card h3{margin:0;font-size:16px;}
+  .card p{margin:8px 0 0;color:var(--muted);font-size:13px;}
+  .card .meta{display:flex;justify-content:space-between;align-items:center;margin-top:12px;}
+  .btn-primary{padding:8px 12px;border-radius:8px;background:var(--accent);color:white;text-decoration:none;font-weight:600;border:0;cursor:pointer;}
+  .btn-link{background:transparent;border:0;color:var(--accent);font-weight:600;cursor:pointer;text-decoration:underline;font-size:13px;}
 
-    .hero h1 {
-        font-size: 52px;
-        text-shadow: 0 0 25px black;
-    }
+  /* right column */
+  aside{position:sticky;top:26px;height:max-content;border-radius:12px;padding:14px;background:var(--card);box-shadow:var(--shadow);}
+  .panel h4{margin:0 0 12px 0;}
+  .category-list{display:flex;flex-direction:column;gap:8px;}
+  .small{font-size:13px;color:var(--muted);}
 
-    @keyframes fadeIn {
-        from {opacity: 0;}
-        to {opacity: 1;}
-    }
+  footer{margin-top:28px;text-align:center;color:var(--muted);font-size:13px;}
 
-    .container {
-        width: 92%;
-        margin: 50px auto;
-    }
+  /* modal */
+  .modal-bg{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:none;align-items:center;justify-content:center;z-index:99;padding:18px;}
+  .modal{width:100%;max-width:680px;background:var(--card);border-radius:12px;padding:16px;box-shadow:var(--shadow);}
+  .modal img{width:100%;height:380px;object-fit:cover;border-radius:8px;}
+  .modal .mrow{display:flex;gap:12px;margin-top:12px;align-items:center;justify-content:space-between;}
+  .close-x{background:transparent;border:0;font-size:16px;cursor:pointer;color:var(--muted);}
 
-    .section-title {
-        font-size: 32px;
-        font-weight: 700;
-        margin-bottom: 25px;
-        animation: fadeIn 1s ease;
-    }
-
-    .products {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 25px;
-    }
-
-    .product-card {
-        background: var(--card);
-        border-radius: 14px;
-        overflow: hidden;
-        transition: 0.2s;
-        cursor: pointer;
-        border: 1px solid #222;
-        animation: fadeInUp 0.7s ease;
-    }
-
-    @keyframes fadeInUp {
-        from {opacity: 0; transform: translateY(20px);}
-        to {opacity: 1; transform: translateY(0);}
-    }
-
-    .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0 18px rgba(255,255,255,0.12);
-    }
-
-    .product-card img {
-        width: 100%;
-        height: 260px;
-        object-fit: cover;
-    }
-
-    .product-info {
-        padding: 18px;
-    }
-
-    .product-info h3 {
-        margin: 0 0 8px;
-        font-size: 20px;
-        font-weight: 600;
-    }
-
-    .buy-btn {
-        display: inline-block;
-        margin-top: 10px;
-        padding: 10px 14px;
-        background: var(--accent);
-        color: white;
-        text-decoration: none;
-        font-weight: 600;
-        border-radius: 6px;
-    }
-
-    footer {
-        text-align: center;
-        padding: 40px;
-        margin-top: 50px;
-        background: var(--card);
-        opacity: 0.8;
-        font-size: 14px;
-        transition: 0.3s;
-    }
-
-    /* Popup Modal */
-    .modal-bg {
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.75);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 50;
-    }
-
-    .modal {
-        width: 90%;
-        max-width: 450px;
-        background: var(--card);
-        border-radius: 16px;
-        padding: 20px;
-        animation: fadeInUp 0.4s ease;
-        text-align: center;
-    }
-
-    .modal img {
-        width: 100%;
-        border-radius: 10px;
-    }
-
-    .close-btn {
-        margin-top: 15px;
-        padding: 10px 20px;
-        background: var(--accent);
-        border: none;
-        color: white;
-        font-weight: 600;
-        border-radius: 8px;
-        cursor: pointer;
-    }
+  /* small touches */
+  .muted{color:var(--muted)}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 </style>
 </head>
+<body class="">
 
-<body>
-
-<header>
-    <!-- Replace this URL with your actual logo -->
-    <img class="logo-img" src="https://i.imgur.com/Zv3pJ4T.png" alt="FAB District Logo">
-
-    <nav>
-        <a href="#shop">Shop</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-        <button class="theme-btn" onclick="toggleTheme()">Theme</button>
-    </nav>
-</header>
-
-<section class="hero">
-    <h1>Premium Roblox Clothing</h1>
-</section>
-
-<div class="container" id="shop">
-    <div class="section-title">New Arrivals</div>
-
-    <div class="products">
-
-        <!-- PRODUCT TEMPLATE -->
-        <div class="product-card" onclick="openModal('Streetwear Black Hoodie', 'https://i.imgur.com/UkWbQfa.jpeg', 'https://www.roblox.com/catalog/0000000')">
-            <img src="https://i.imgur.com/UkWbQfa.jpeg">
-            <div class="product-info">
-                <h3>Streetwear Black Hoodie</h3>
-                <p>Premium layered hoodie with modern fit.</p>
-                <a class="buy-btn" href="https://www.roblox.com/catalog/0000000" target="_blank">Buy on Roblox</a>
-            </div>
-        </div>
-
-        <div class="product-card" onclick="openModal('FAB District Cargo Fit', 'https://i.imgur.com/pxI8x3a.jpeg', 'https://www.roblox.com/catalog/0000000')">
-            <img src="https://i.imgur.com/pxI8x3a.jpeg">
-            <div class="product-info">
-                <h3>FAB District Cargo Fit</h3>
-                <p>Urban style cargo for every avatar.</p>
-                <a class="buy-btn" href="https://www.roblox.com/catalog/0000000" target="_blank">Buy on Roblox</a>
-            </div>
-        </div>
-
-        <div class="product-card" onclick="openModal('Oversized Tech Tee', 'https://i.imgur.com/VJYVXha.jpeg', 'https://www.roblox.com/catalog/0000000')">
-            <img src="https://i.imgur.com/VJYVXha.jpeg">
-            <div class="product-info">
-                <h3>Oversized Tech Tee</h3>
-                <p>Sleek techwear tee with glowing accents.</p>
-                <a class="buy-btn" href="https://www.roblox.com/catalog/0000000" target="_blank">Buy on Roblox</a>
-            </div>
-        </div>
-
+<div class="wrap">
+  <header class="site" role="banner">
+    <div class="brand">
+      <img id="logoImg" src="https://i.imgur.com/Zv3pJ4T.png" alt="FAB District logo">
+      <div>
+        <h1>FAB District</h1>
+        <div class="small muted">Professional • Calm • Minimal</div>
+      </div>
     </div>
-</div>
 
-<div class="container" id="about" style="margin-top: 80px;">
-    <div class="section-title">About Us</div>
-    <p>
-        FAB District is a premium Roblox clothing brand delivering top-quality textures,
-        streetwear designs, and stylish avatar fashion.
-    </p>
-</div>
+    <div class="controls" role="navigation" aria-label="Top controls">
+      <div class="searchbar" title="Search products">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <input id="searchInput" placeholder="Search products, tags, styles..." aria-label="Search products">
+        <div class="filters" id="filterBtns">
+          <button class="filter-btn active" data-cat="all">All</button>
+          <button class="filter-btn" data-cat="Hoodies">Hoodies</button>
+          <button class="filter-btn" data-cat="Tops">Tops</button>
+          <button class="filter-btn" data-cat="Pants">Pants</button>
+        </div>
+      </div>
 
-<div class="container" id="contact" style="margin-top: 80px;">
-    <div class="section-title">Contact</div>
-    <p>For support: fabdistrict-support@example.com</p>
-</div>
-
-<footer>
-    © 2025 FAB District – All Rights Reserved.
-</footer>
-
-<!-- Modal -->
-<div class="modal-bg" id="modal-bg">
-    <div class="modal">
-        <h2 id="modal-title"></h2>
-        <img id="modal-img">
-        <br><br>
-        <a id="modal-link" class="buy-btn" target="_blank">Buy on Roblox</a>
-        <br><br>
-        <button class="close-btn" onclick="closeModal()">Close</button>
+      <button id="audioToggle" class="utility-btn audio-toggle" aria-pressed="false" title="Toggle background music">Play Lofi</button>
+      <button id="themeToggle" class="utility-btn" title="Toggle theme">Dark</button>
     </div>
+  </header>
+
+  <main>
+    <section class="leftcol">
+
+      <div class="hero">
+        <h2>Clean, professional Roblox fashion.</h2>
+        <p class="muted">Shop realistic store-style collections — each product links directly to Roblox for easy buying. Calm, minimal design for a great browsing experience.</p>
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="scrollToShop()">Shop New Arrivals</button>
+          <button class="btn-link" onclick="openFeatured()">View Featured Collection</button>
+        </div>
+      </div>
+
+      <div class="featured" aria-label="Featured collection">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <strong>Featured Collection</strong>
+          <span class="small muted">Curated picks</span>
+        </div>
+
+        <div class="slider" id="sliderWrap">
+          <button class="nav-arrow left" id="slidePrev" aria-label="Previous">◀</button>
+          <div class="slides" id="slidesRow" style="will-change:transform"></div>
+          <button class="nav-arrow right" id="slideNext" aria-label="Next">▶</button>
+        </div>
+      </div>
+
+      <div id="shopSection">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin:10px 0">
+          <strong style="font-size:18px">New Arrivals</strong>
+          <div class="small muted" id="resultsCount">—</div>
+        </div>
+
+        <div class="grid" id="productsGrid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <aside>
+      <div class="panel">
+        <h4>Filters</h4>
+        <div class="category-list" id="sideCategories">
+          <button class="filter-btn" data-cat="all">All</button>
+          <button class="filter-btn" data-cat="Hoodies">Hoodies</button>
+          <button class="filter-btn" data-cat="Tops">Tops</button>
+          <button class="filter-btn" data-cat="Pants">Pants</button>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <h4>Quick Links</h4>
+        <div class="small muted">
+          <div style="margin-bottom:8px">Support: fabdistrict-support@example.com</div>
+          <div>Roblox storefront base URL:</div>
+          <div style="word-break:break-all"><a href="https://www.roblox.com/catalog/0000000">https://www.roblox.com/catalog/0000000</a></div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    © 2025 FAB District — Built for calm browsing.
+  </footer>
 </div>
+
+<!-- Modal for product preview -->
+<div class="modal-bg" id="modalBg" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal" role="document">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <h3 id="mTitle">Product</h3>
+        <div class="small muted" id="mCat"></div>
+      </div>
+      <button class="close-x" onclick="closeModal()">✕</button>
+    </div>
+    <img id="mImg" src="" alt="Product preview">
+    <div class="mrow">
+      <div>
+        <div style="font-weight:700" id="mDesc">Description</div>
+        <div class="small muted" id="mPrice" style="margin-top:6px"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+        <a id="mBuy" class="btn-primary" target="_blank" rel="noopener">Buy on Roblox</a>
+        <button class="utility-btn" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden audio element (does NOT autoplay) -->
+<audio id="bgAudio" loop preload="metadata">
+  <source src="https://filesamples.com/samples/audio/mp3/sample2.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
 
 <script>
-    function toggleTheme() {
-        document.body.classList.toggle("light");
-    }
+/* ---------- Embedded product JSON (auto-loaded) ---------- */
+const PRODUCTS = [
+  {
+    "id":"p001",
+    "title":"Streetwear Black Hoodie",
+    "category":"Hoodies",
+    "description":"Premium layered hoodie with modern fit.",
+    "image":"https://i.imgur.com/UkWbQfa.jpeg",
+    "roblox":"https://www.roblox.com/catalog/0000000",
+    "featured": true,
+    "price":"80 Robux"
+  },
+  {
+    "id":"p002",
+    "title":"FAB District Cargo Fit",
+    "category":"Pants",
+    "description":"Urban cargo pants with practical pocket layout.",
+    "image":"https://i.imgur.com/pxI8x3a.jpeg",
+    "roblox":"https://www.roblox.com/catalog/0000000",
+    "featured": true,
+    "price":"60 Robux"
+  },
+  {
+    "id":"p003",
+    "title":"Oversized Tech Tee",
+    "category":"Tops",
+    "description":"Sleek techwear tee with subtle accents.",
+    "image":"https://i.imgur.com/VJYVXha.jpeg",
+    "roblox":"https://www.roblox.com/catalog/0000000",
+    "featured": false,
+    "price":"45 Robux"
+  },
+  {
+    "id":"p004",
+    "title":"Minimalist Zip Jacket",
+    "category":"Hoodies",
+    "description":"Lightweight zip jacket for a clean silhouette.",
+    "image":"https://i.imgur.com/aG8Z8kQ.jpeg",
+    "roblox":"https://www.roblox.com/catalog/0000000",
+    "featured": true,
+    "price":"90 Robux"
+  },
+  {
+    "id":"p005",
+    "title":"Relaxed Fit Joggers",
+    "category":"Pants",
+    "description":"Comfort-first joggers with subtle stitching.",
+    "image":"https://i.imgur.com/3Y7JH6G.jpeg",
+    "roblox":"https://www.roblox.com/catalog/0000000",
+    "featured": false,
+    "price":"55 Robux"
+  }
+];
+/* --------------------------------------------------------- */
 
-    function openModal(name, img, link) {
-        document.getElementById("modal-title").innerText = name;
-        document.getElementById("modal-img").src = img;
-        document.getElementById("modal-link").href = link;
-        document.getElementById("modal-bg").style.display = "flex";
-    }
+/* ---------- UI / Behavior ---------- */
+const grid = document.getElementById('productsGrid');
+const slidesRow = document.getElementById('slidesRow');
+const resultsCount = document.getElementById('resultsCount');
+const searchInput = document.getElementById('searchInput');
+const filterButtons = Array.from(document.querySelectorAll('#filterBtns .filter-btn'));
+const sideFilters = Array.from(document.querySelectorAll('#sideCategories .filter-btn'));
+const themeToggle = document.getElementById('themeToggle');
+const audioToggle = document.getElementById('audioToggle');
+const bgAudio = document.getElementById('bgAudio');
 
-    function closeModal() {
-        document.getElementById("modal-bg").style.display = "none";
+let activeCategory = 'all';
+let activeQuery = '';
+let slideIndex = 0;
+
+/* render products into grid */
+function renderProducts(list){
+  grid.innerHTML = '';
+  if(!list.length){
+    grid.innerHTML = '<div style="padding:22px;background:var(--card);border-radius:12px;">No products found.</div>';
+  }
+  list.forEach(p=>{
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.innerHTML = `
+      <img src="${p.image}" alt="${escapeHtml(p.title)}">
+      <div class="info">
+        <h3>${escapeHtml(p.title)}</h3>
+        <p class="muted">${escapeHtml(p.description)}</p>
+        <div class="meta">
+          <div class="small muted">${escapeHtml(p.price)}</div>
+          <div>
+            <button class="btn-primary" onclick="openRoblox('${p.roblox}')">Buy</button>
+            <button class="utility-btn" onclick='openModalFromObj(${JSON.stringify(p)})'>Preview</button>
+          </div>
+        </div>
+      </div>
+    `;
+    grid.appendChild(el);
+  });
+  resultsCount.innerText = `${list.length} items`;
+}
+
+/* render featured slider */
+function renderFeatured(){
+  const featured = PRODUCTS.filter(p=>p.featured);
+  slidesRow.innerHTML = '';
+  featured.forEach((p, i)=>{
+    const s = document.createElement('div');
+    s.className = 'slide';
+    s.dataset.index = i;
+    s.innerHTML = `<img src="${p.image}" alt="${escapeHtml(p.title)}"><div class="sinfo" style="padding:12px"><strong>${escapeHtml(p.title)}</strong><div class="small muted">${escapeHtml(p.price)}</div></div>`;
+    s.onclick = ()=>openModalFromObj(p);
+    slidesRow.appendChild(s);
+  });
+  slideIndex = 0;
+  updateSlider();
+}
+
+/* slider controls */
+document.getElementById('slidePrev').addEventListener('click', ()=>{
+  const total = slidesRow.children.length;
+  slideIndex = (slideIndex - 1 + total) % total;
+  updateSlider();
+});
+document.getElementById('slideNext').addEventListener('click', ()=>{
+  const total = slidesRow.children.length;
+  slideIndex = (slideIndex + 1) % total;
+  updateSlider();
+});
+function updateSlider(){
+  const w = slidesRow.children[0] ? slidesRow.children[0].offsetWidth + 12 : 272;
+  slidesRow.style.transform = `translateX(-${slideIndex * w}px)`;
+}
+
+/* search + filter */
+function applySearchAndFilter(){
+  const q = activeQuery.trim().toLowerCase();
+  let list = PRODUCTS.filter(p=>{
+    if(activeCategory !== 'all' && p.category !== activeCategory) return false;
+    if(!q) return true;
+    return p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q) || p.category.toLowerCase().includes(q);
+  });
+  renderProducts(list);
+}
+
+/* helpers */
+function escapeHtml(s){ return (s+'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* open roblox catalog (in new tab) */
+function openRoblox(url){ window.open(url,'_blank','noopener'); }
+
+/* preview modal */
+function openModalFromObj(p){
+  document.getElementById('mTitle').innerText = p.title;
+  document.getElementById('mCat').innerText = p.category;
+  document.getElementById('mImg').src = p.image;
+  document.getElementById('mDesc').innerText = p.description;
+  document.getElementById('mPrice').innerText = p.price;
+  document.getElementById('mBuy').href = p.roblox;
+  openModal();
+}
+function openModal(){ document.getElementById('modalBg').style.display='flex';document.getElementById('modalBg').setAttribute('aria-hidden','false'); }
+function closeModal(){ document.getElementById('modalBg').style.display='none';document.getElementById('modalBg').setAttribute('aria-hidden','true'); }
+
+/* search input */
+searchInput.addEventListener('input', (e)=>{
+  activeQuery = e.target.value;
+  applySearchAndFilter();
+});
+
+/* filter buttons */
+filterButtons.forEach(b=>{
+  b.addEventListener('click', ()=>{
+    filterButtons.forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    activeCategory = b.dataset.cat;
+    applySearchAndFilter();
+  });
+});
+sideFilters.forEach(b=>{
+  b.addEventListener('click', ()=>{
+    sideFilters.forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    // mirror top filters if exists
+    const top = filterButtons.find(f=>f.dataset.cat === b.dataset.cat);
+    if(top){ filterButtons.forEach(x=>x.classList.remove('active')); top.classList.add('active'); activeCategory = top.dataset.cat; }
+    applySearchAndFilter();
+  });
+});
+
+/* theme toggle */
+themeToggle.addEventListener('click', ()=>{
+  document.body.classList.toggle('dark');
+  themeToggle.innerText = document.body.classList.contains('dark') ? 'Light' : 'Dark';
+});
+
+/* audio control (does not autoplay) */
+audioToggle.addEventListener('click', async ()=>{
+  if(bgAudio.paused){
+    try{
+      await bgAudio.play();
+      audioToggle.classList.add('playing');
+      audioToggle.innerText = 'Pause Lofi';
+      audioToggle.setAttribute('aria-pressed','true');
+    }catch(e){
+      console.warn('Audio play blocked by browser (user gesture required).');
     }
+  } else {
+    bgAudio.pause();
+    audioToggle.classList.remove('playing');
+    audioToggle.innerText = 'Play Lofi';
+    audioToggle.setAttribute('aria-pressed','false');
+  }
+});
+
+/* helper actions */
+function scrollToShop(){ document.getElementById('shopSection').scrollIntoView({behavior:'smooth'}); }
+function openFeatured(){ document.getElementById('sliderWrap').scrollIntoView({behavior:'smooth'}); }
+
+/* initial render */
+renderFeatured();
+renderProducts(PRODUCTS);
+
+/* keyboard: ESC closes modal and pauses audio */
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){ closeModal(); if(!bgAudio.paused){ bgAudio.pause(); audioToggle.classList.remove('playing'); audioToggle.innerText='Play Lofi'; } }
+});
+
+/* adapt slider on resize */
+window.addEventListener('resize', updateSlider);
 </script>
-
 </body>
 </html>
