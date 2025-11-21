@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FAB District – Clothing Store</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --bg: #0e0e0e;
+        --card: #151515;
+        --text: #ffffff;
+        --accent: #ff2758;
+    }
+
+    body.light {
+        --bg: #ffffff;
+        --card: #f3f3f3;
+        --text: #000000;
+    }
+
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        transition: background 0.3s, color 0.3s;
+    }
+
+    header {
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--card);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        border-bottom: 1px solid #222;
+        transition: 0.3s;
+    }
+
+    .logo-img {
+        height: 60px;
+        border-radius: 12px;
+    }
+
+    nav a {
+        margin-left: 25px;
+        text-decoration: none;
+        color: var(--text);
+        font-weight: 500;
+        font-size: 16px;
+        transition: 0.25s;
+    }
+
+    nav a:hover {
+        opacity: 0.7;
+    }
+
+    .theme-btn {
+        margin-left: 20px;
+        padding: 8px 15px;
+        background: var(--accent);
+        border: none;
+        color: white;
+        font-weight: 600;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .hero {
+        height: 330px;
+        background: url("https://i.imgur.com/zYxN4TE.jpeg") center/cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        animation: fadeIn 1.3s ease;
+    }
+
+    .hero h1 {
+        font-size: 52px;
+        text-shadow: 0 0 25px black;
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+
+    .container {
+        width: 92%;
+        margin: 50px auto;
+    }
+
+    .section-title {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 25px;
+        animation: fadeIn 1s ease;
+    }
+
+    .products {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 25px;
+    }
+
+    .product-card {
+        background: var(--card);
+        border-radius: 14px;
+        overflow: hidden;
+        transition: 0.2s;
+        cursor: pointer;
+        border: 1px solid #222;
+        animation: fadeInUp 0.7s ease;
+    }
+
+    @keyframes fadeInUp {
+        from {opacity: 0; transform: translateY(20px);}
+        to {opacity: 1; transform: translateY(0);}
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 18px rgba(255,255,255,0.12);
+    }
+
+    .product-card img {
+        width: 100%;
+        height: 260px;
+        object-fit: cover;
+    }
+
+    .product-info {
+        padding: 18px;
+    }
+
+    .product-info h3 {
+        margin: 0 0 8px;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .buy-btn {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 14px;
+        background: var(--accent);
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        border-radius: 6px;
+    }
+
+    footer {
+        text-align: center;
+        padding: 40px;
+        margin-top: 50px;
+        background: var(--card);
+        opacity: 0.8;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+
+    /* Popup Modal */
+    .modal-bg {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.75);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 50;
+    }
+
+    .modal {
+        width: 90%;
+        max-width: 450px;
+        background: var(--card);
+        border-radius: 16px;
+        padding: 20px;
+        animation: fadeInUp 0.4s ease;
+        text-align: center;
+    }
+
+    .modal img {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    .close-btn {
+        margin-top: 15px;
+        padding: 10px 20px;
+        background: var(--accent);
+        border: none;
+        color: white;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <!-- Replace this URL with your actual logo -->
+    <img class="logo-img" src="https://i.imgur.com/Zv3pJ4T.png" alt="FAB District Logo">
+
+    <nav>
+        <a href="#shop">Shop</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <button class="theme-btn" onclick="toggleTheme()">Theme</button>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Premium Roblox Clothing</h1>
+</section>
+
+<div class="container" id="shop">
+    <div class="section-title">New Arrivals</div>
+
+    <div class="products">
+
+        <!-- PRODUCT TEMPLATE -->
+        <div class="product-card" onclick="openModal('Streetwear Black Hoodie', 'https://i.imgur.com/UkWbQfa.jpeg', 'https://www.roblox.com/catalog/0000000')">
+            <img src="https://i.imgur.com/UkWbQfa.jpeg">
+            <div class="product-info">
+                <h3>Streetwear Black Hoodie</h3>
+                <p>Premium layered hoodie with modern fit.</p>
+                <a class="buy-btn" href="https://www.roblox.com/catalog/0000000" target="_blank">Buy on Roblox</a>
+            </div>
+        </div>
+
+        <div class="product-card" onclick="openModal('FAB District Cargo Fit', 'https://i.imgur.com/pxI8x3a.jpeg', 'https://www.roblox.com/catalog/0000000')">
+            <img src="https://i.imgur.com/pxI8x3a.jpeg">
+            <div class="product-info">
+                <h3>FAB District Cargo Fit</h3>
+                <p>Urban style cargo for every avatar.</p>
+                <a class="buy-btn" href="https://www.roblox.com/catalog/0000000" target="_blank">Buy on Roblox</a>
+            </div>
+        </div>
+
+        <div class="product-card" onclick="openModal('Oversized Tech Tee', 'https://i.imgur.com/VJYVXha.jpeg', 'https://www.roblox.com/catalog/0000000')">
+            <img src="https://i.imgur.com/VJYVXha.jpeg">
+            <div class="product-info">
+                <h3>Oversized Tech Tee</h3>
+                <p>Sleek techwear tee with glowing accents.</p>
+                <a class="buy-btn" href="https://www.roblox.com/catalog/0000000" target="_blank">Buy on Roblox</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="container" id="about" style="margin-top: 80px;">
+    <div class="section-title">About Us</div>
+    <p>
+        FAB District is a premium Roblox clothing brand delivering top-quality textures,
+        streetwear designs, and stylish avatar fashion.
+    </p>
+</div>
+
+<div class="container" id="contact" style="margin-top: 80px;">
+    <div class="section-title">Contact</div>
+    <p>For support: fabdistrict-support@example.com</p>
+</div>
+
+<footer>
+    © 2025 FAB District – All Rights Reserved.
+</footer>
+
+<!-- Modal -->
+<div class="modal-bg" id="modal-bg">
+    <div class="modal">
+        <h2 id="modal-title"></h2>
+        <img id="modal-img">
+        <br><br>
+        <a id="modal-link" class="buy-btn" target="_blank">Buy on Roblox</a>
+        <br><br>
+        <button class="close-btn" onclick="closeModal()">Close</button>
+    </div>
+</div>
+
+<script>
+    function toggleTheme() {
+        document.body.classList.toggle("light");
+    }
+
+    function openModal(name, img, link) {
+        document.getElementById("modal-title").innerText = name;
+        document.getElementById("modal-img").src = img;
+        document.getElementById("modal-link").href = link;
+        document.getElementById("modal-bg").style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById("modal-bg").style.display = "none";
+    }
+</script>
+
+</body>
+</html>
